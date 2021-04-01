@@ -1,0 +1,26 @@
+model = VGG16()
+    image = load_img('uploads/' + filename, target_size=(224, 224))
+    image = img_to_array(image)
+    image_pr = preprocess_input(image)
+    tf.keras.preprocessing.image.array_to_img(image_pr)
+    image_pr = image_pr.reshape((1, image_pr.shape[0], image_pr.shape[1], image_pr.shape[2]))
+    proba = model.predict(image_pr)
+    most_likely = decode_predictions(proba, top=5)
+    most_likely = pd.DataFrame(pd.DataFrame(most_likely).T[0].values.tolist(), columns=['id', 'label', 'proba'])
+    label = decode_predictions(proba, top=5)
+
+
+<form method="post" action="/" enctype="multipart/form-data">
+
+    <dl>
+	<p>
+        <div class="mb-3">
+        <label for="formFile" class="form-label">Choisissez votre image : </label>
+        <input class="form-control" type="file" name="file" autocomplete="off" required>
+</div>
+	</p>
+    </dl>
+    <p>
+	<input type="submit" value="Submit">
+    </p>
+</form>
